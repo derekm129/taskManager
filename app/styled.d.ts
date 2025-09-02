@@ -6,6 +6,8 @@ declare module "styled-components" {
     sidebarWidth: string;
     colorBg2: string;
     borderColor2: string;
+    colorGrey3: string;
+    colorGrey0: string;
     // add any other theme values here
   }
 }

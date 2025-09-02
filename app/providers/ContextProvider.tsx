@@ -7,6 +7,18 @@ interface Props {
 }
 
 function ContextProvider({children} : Props) {
+
+    const [isReady, setIsReady] = React.useState(false);
+    React.useEffect(() => {
+        setTimeout(() => {
+            setIsReady(true);
+        }, 200);
+    }, [])
+
+    if (!isReady) {
+        return null;
+    }
+
     return (
         <GlobalProvider>{children}</GlobalProvider> 
     )
