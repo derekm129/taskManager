@@ -13,7 +13,10 @@ function GlobalStyleProvider({children }: Props) {
 }
 
 const GlobalStyles = style.div`
-    background-color: red;
+    padding: 2.5rem;
+    display: flex;
+    gap: 2.5rem;
+    height: 100%;
 `;
 
 export default GlobalStyleProvider;
