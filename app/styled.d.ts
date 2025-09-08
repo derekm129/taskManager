@@ -5,6 +5,7 @@ declare module "styled-components" {
   export interface DefaultTheme {
     sidebarWidth: string;
     colorBg2: string;
+    colorBg3: string;
     borderColor2: string;
     colorGrey3: string;
     colorGrey0: string;

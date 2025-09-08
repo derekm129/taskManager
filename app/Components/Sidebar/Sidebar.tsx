@@ -68,6 +68,53 @@ const SidebarStyled = styled.nav`
         cursor: pointer;
         font=weight: 500;
         color: ${(props) => props.theme.colorGrey0};
+
+        display: flex;
+        align-items: center;
+
+        .profile-overlay: {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            backdrop-filter: blur(10px);
+            z-index: 0;
+            background: ${(props) => props.theme.colorBg3};
+            transition: all 0.55s linear;
+            border-radius: 1rem;
+            border: 2px solid  ${(props) => props.theme.borderColor2};
+            opacity: 0.2;
+        }
+        
+        h1 {
+            font-size: 1.2 rem;
+            display: flex;
+            flex-direction: column;
+            line-height: 1.5rem;
+        }
+
+        .image, 
+        h1{
+            position: relative;
+            z-index: 1;
+        }
+
+        .image{
+            flex-shrink: 0;
+            display: inline-block;
+            overflow: hidden;
+            transition: all 0.5s ease;
+            border-radius: 100%;
+
+            width: 70px;
+            height: 70px;
+
+            img {
+            border-radius: 100%;
+            transition: a;; 0.5s ease;
+            }
+        }
     }
 
 `;
