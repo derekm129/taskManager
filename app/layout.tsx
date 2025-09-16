@@ -59,7 +59,7 @@ export default function RootLayout({
                 </button>
               </SignUpButton>
             </SignedOut>
-            <SignedIn>
+            <SignedIn >
               <UserButton />
             </SignedIn>
           </header>
