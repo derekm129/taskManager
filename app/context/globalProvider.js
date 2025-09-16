@@ -1,5 +1,6 @@
 "use client"
-import React, { createContext, useState, useContext } from "react"
+import React, { createContext, useState, useContext } from "react";
+import { ThemeProvider } from "styled-components";
 import themes from "./themes";
 export const GlobalContext = createContext();
 export const GlobalUpdateContext = createContext();
@@ -11,9 +12,13 @@ export const GlobalProvider = ({ children }) => {
         <GlobalContext.Provider
             value={{
                 theme,
+                selectedTheme,
+                setSelectedTheme
             }}>
             <GlobalUpdateContext.Provider value={{}}>
-                {children}
+                <ThemeProvider theme={theme}>
+                    {children}
+                </ThemeProvider>
             </GlobalUpdateContext.Provider>
         </GlobalContext.Provider>
     )

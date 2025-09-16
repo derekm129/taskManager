@@ -4,6 +4,16 @@ import "./globals.css";
 import Sidebar from "./Components/Sidebar/Sidebar";
 import GlobalStyleProvider from "./providers/globalStyleProvider";
 import ContextProvider from "./providers/ContextProvider";
+import {
+  ClerkProvider,
+  SignInButton,
+  SignUpButton,
+  SignedIn,
+  SignedOut,
+  UserButton,
+} from '@clerk/nextjs'
+
+import './globals.css'
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -26,7 +36,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <ClerkProvider>
+      <html lang="en">
       <head>
        <link 
         rel="stylesheet" 
@@ -39,12 +50,29 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       > 
       <ContextProvider>
+            <header className="flex justify-end items-center p-4 gap-4 h-16">
+            <SignedOut>
+              <SignInButton />
+              <SignUpButton>
+                <button className="bg-[#6c47ff] text-white rounded-full font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 cursor-pointer">
+                  Sign Up
+                </button>
+              </SignUpButton>
+            </SignedOut>
+            <SignedIn >
+              <UserButton />
+            </SignedIn>
+          </header>
         <GlobalStyleProvider>
           <Sidebar />
-          {children}
+          <div className="w-full">
+             {children}
+          </div>
         </GlobalStyleProvider>
       </ContextProvider>
       </body>
-    </html>
+      </html>
+    </ClerkProvider>
+    
   );
 }

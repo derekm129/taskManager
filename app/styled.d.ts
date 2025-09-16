@@ -9,6 +9,12 @@ declare module "styled-components" {
     borderColor2: string;
     colorGrey3: string;
     colorGrey0: string;
+    activeNavLinkHover: string;
+    colorGreenDark: string;
+    colorIcons: string;
+    colorIcons2: string;
+    activeNavLink: string;
+
     // add any other theme values here
   }
 }
