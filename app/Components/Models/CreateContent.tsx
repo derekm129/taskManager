@@ -1,6 +1,8 @@
 "use client"
 import { useGlobalState } from "@/app/context/globalProvider";
 import React, {useState, ChangeEvent} from "react";
+import axios from "axios";
+import toast from "react-hot-toast";
 
 function CreateContent() {
     const [title, setTitle] = useState("");
@@ -21,17 +23,41 @@ function CreateContent() {
             setDate(e.target.value);
             break;
         case "completed":
-            setCompleted(e.target.checked);
+            setCompleted((e.target as HTMLInputElement).checked);
             break;
         case "important":
-            setImportant(e.target.checked);
+            setImportant((e.target as HTMLInputElement).checked);
             break;
         default:
             break;
         }
     };
 
-    return <div>
+    const handleSubmit =  async (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+
+        const task = {
+            title, 
+            description, 
+            date, 
+            completed, 
+            important
+        };
+
+        try {
+            const res = await axios.post("/api/tasks", task);
+            if(res.data.error) {
+                toast.error(res.data.error);
+            }
+
+            toast.success("Task created succussfully.");
+        } catch(error) {
+            toast.error("Something went wrong.")
+            console.log(error);
+        }
+    };
+
+    return <form onSubmit={handleSubmit}>
         <h1>Create a Task</h1>
         {/* Title */}
         <div className="input-control">
@@ -94,7 +120,7 @@ function CreateContent() {
         <div className="submit-btn">
             <button type="submit">Submit</button>
         </div>
-    </div>;
+    </form>;
 };
 
 export default CreateContent;

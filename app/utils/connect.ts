@@ -1,14 +1,18 @@
-import { PrismaClient } from "@prisma/client";
+import { PrismaClient } from "@prisma/client"; // adjust path if generated elsewhere
 
-let prisma:  PrismaClient;
-
-if(process.env.NODE_ENV === 'production') {
-   prisma = new PrismaClient() 
-}else{
-    if(!global.prisma){
-        global.prisma = new PrismaClient()
-    }
-    prisma = global.prisma;
+// Declare globalThis.prisma to avoid TS errors in dev
+declare global {
+  var prisma: PrismaClient | undefined;
 }
+
+// Use a single instance to prevent multiple connections in dev
+export const prisma =
+  globalThis.prisma ||
+  new PrismaClient({
+    log: ["query", "warn", "error"],
+  });
+
+// Cache the instance in dev
+if (process.env.NODE_ENV !== "production") globalThis.prisma = prisma;
 
 export default prisma;

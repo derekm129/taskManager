@@ -6,7 +6,7 @@
 
 generator client {
   provider = "prisma-client-js"
-  output   = "../app/generated/prisma"
+  // output   = "../app/generated/prisma"
 }
 
 datasource db {
@@ -17,7 +17,7 @@ datasource db {
 model Task{
   id String @id @default(cuid()) @map("_id")
   title String
-  decription String?
+  description String?
   date String
   isCompleted Boolean @default(false)
   isImportant Boolean @default(false)
