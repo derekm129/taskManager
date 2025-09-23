@@ -4,12 +4,28 @@ import React from "react";
 import styled from "styled-components";
 import CreateContent from "../Models/CreateContent";
 
-function Tasks() {
+interface Task {
+  id: number;
+  name: string;
+  completed: boolean;
+}
+
+interface Props {
+  title: string;
+  tasks: Task[];
+}
+
+function Tasks({title, tasks}: Props) {
     const { theme } = useGlobalState();
-    return (
-        <TaskStyled theme={theme}>
-           <CreateContent />
-        </TaskStyled>);
+
+    return <TaskStyled theme={theme}>
+        <h2>{title}</h2>
+        <div className="tasks grid">
+            {tasks.map((task) => (
+                <TaskItem key={task.id} task={{ ...task }} />
+            ))}
+        </div>
+    </TaskStyled>;
 }
 
 
