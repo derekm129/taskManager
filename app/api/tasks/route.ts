@@ -1,5 +1,5 @@
 import prisma from "@/app/utils/connect";
-import { getAuth } from "@clerk/nextjs/server";
+import { getAuth, auth } from "@clerk/nextjs/server";
 import { NextResponse, NextRequest } from "next/server";
 
 export async function POST(req: NextRequest) {
@@ -36,6 +36,8 @@ export async function POST(req: NextRequest) {
             userId
         },
     });
+
+    console.log("TASK CREATED: ", task);
     
     return NextResponse.json(task);
     } catch (error) {
@@ -44,15 +46,30 @@ export async function POST(req: NextRequest) {
     }
 }
 
-export async function GET(req: Request) {
+export async function GET(req: NextRequest) {
     try {
+        const { userId } = getAuth(req);
+
+        if(!userId) {
+            return NextResponse.json({ error: "Unauthorized", status: 401 });
+        }
+
+        const tasks = await prisma.task.findMany({
+            where: {
+                userId,
+            }
+        });
+
+        console.log("TASKS: ", tasks);
+        return NextResponse.json(tasks);
+        
     } catch (error) {
         console.log("ERROR GETTING TASK: ", error);
         return NextResponse.json({ error: "Error getting task", status: 500 });
     }
 }
 
-export async function PUT(req: Request) {
+export async function PUT(req: NextRequest) {
     try {
     } catch (error) {
         console.log("ERROR UPDATING TASK: ", error);
@@ -60,7 +77,7 @@ export async function PUT(req: Request) {
     }
 }
 
-export async function DELETE(req: Request) {
+export async function DELETE(req: NextRequest) {
     try {
     } catch (error) {
         console.log("ERROR DELETING TASK: ", error);
