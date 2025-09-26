@@ -1,9 +1,11 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Geist, Geist_Mono, Nunito } from "next/font/google";
 import "./globals.css";
 import Sidebar from "./Components/Sidebar/Sidebar";
 import GlobalStyleProvider from "./providers/globalStyleProvider";
 import ContextProvider from "./providers/ContextProvider";
+import NextTopLoader from "nextjs-toploader";
+
 import {
   ClerkProvider,
   SignInButton,
@@ -13,17 +15,10 @@ import {
   UserButton,
 } from '@clerk/nextjs'
 
-import './globals.css'
-
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+const nunito = Nunito({
+  weight:["400", "500", "600", "700", "800"],
   subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
+})
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -46,9 +41,13 @@ export default function RootLayout({
         crossOrigin="anonymous" 
         referrerPolicy="no-referrer" /> 
       </head>
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      > 
+      <body className={nunito.className}> 
+        {/* NextTopLoader */}
+      <NextTopLoader
+        height={2}
+        color="green"
+        easing="cubic-bezier(0.53, 0.21, 0, 1)"
+      />
       <ContextProvider>
             <header className="flex justify-end items-center p-4 gap-4 h-16">
             <SignedOut>

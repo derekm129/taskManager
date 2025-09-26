@@ -7,20 +7,25 @@ import menu from "@/app/utils/menu";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import themes from "@/app/context/themes";
+import { useClerk } from "@clerk/nextjs";
+import Button from "../Button/Button";
 
 
 function Sidebar() {
     const { theme } = useGlobalState();
-    console.log("Sidebar theme:", theme);
+    const { signOut } = useClerk();
 
     const router = useRouter();
     const pathname = usePathname();
+
+
 
     const handleClick = (link: string) => {
         router.push(link);
     }
 
     return <SidebarStyled>
+        
         <div className="profile">
             <div className="profile-overlay"></div>
             <div className="image">
@@ -33,10 +38,11 @@ function Sidebar() {
         </div>
         <ul className="nav-items">
             {menu.map((item) => {
-
                 const link = item.link;
                 return (
-                <li className={`nav-item ${pathname === link ? "active": ""}`} key={item.id} onClick={() => {
+                <li 
+                    className={`nav-item ${pathname === link ? "active": ""}`} key={item.id} 
+                    onClick={() => {
                     handleClick(link);
                 }}>
                     {item.icon}
@@ -45,7 +51,21 @@ function Sidebar() {
                 );
             })} 
         </ul>
-        <button></button>
+        <div className="sign-out relative m-6">
+            <Button 
+                name={"signOut"}
+                type={"submit"}
+                padding={"0.4rem 0.8rem"}
+                borderRad={"0.6rem"}
+                fw={"500"}
+                fs={"1.2rem"}
+                // icon={logout}
+                click={() =>{
+                    signOut(() => router.push("/sign-in"));
+                }}
+            />
+        </div>
+        
     </SidebarStyled>;
 }
 
@@ -175,11 +195,11 @@ const SidebarStyled = styled.nav`
             color: ${(props) => props.theme.colorIcons};
         }
 
-        &:hover {
+        /* &:hover {
             &:: after {
             width: 100%;
             }
-        }
+        } */
     }
 
     .active{
