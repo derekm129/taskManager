@@ -12,7 +12,7 @@ interface Props {
     isCompleted: boolean;
     id: string;
 }
-
+// Task item
 function TaskItem({ title, description, date, isCompleted, id }: Props) {
   const { theme, deleteTask, updateTask } = useGlobalState();
   return (
@@ -22,6 +22,7 @@ function TaskItem({ title, description, date, isCompleted, id }: Props) {
       <p className="date">{formatDate(date)}</p>
       <div className="task-footer">
         {isCompleted ? (
+          // Complete Button
           <button
             className="completed"
             onClick={() => {
@@ -36,6 +37,7 @@ function TaskItem({ title, description, date, isCompleted, id }: Props) {
             Completed
           </button>
         ) : (
+          // Incomplete Button
           <button
             className="incomplete"
             onClick={() => {
@@ -63,7 +65,7 @@ function TaskItem({ title, description, date, isCompleted, id }: Props) {
     </TaskItemStyled>
   );
 }
-
+// Styles
 const TaskItemStyled = styled.div`
   padding: 1.2rem 1rem;
   border-radius: 1rem;

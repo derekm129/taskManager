@@ -7,13 +7,21 @@ import menu from "@/app/utils/menu";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import themes from "@/app/context/themes";
-import { useClerk } from "@clerk/nextjs";
+import { useClerk, UserButton, useUser } from "@clerk/nextjs";
 import Button from "../Button/Button";
 
 
 function Sidebar() {
     const { theme } = useGlobalState();
     const { signOut } = useClerk();
+
+    const { user } = useUser();
+
+    const { firstName, lastName, imageUrl } = user || 
+    { firstName: "", 
+        lastName: "",
+        imageUrl: ""
+    };
 
     const router = useRouter();
     const pathname = usePathname();
@@ -24,24 +32,29 @@ function Sidebar() {
         router.push(link);
     }
 
-    return <SidebarStyled>
-        
+    return <SidebarStyled theme={theme}>
+        {/* Profile info */}
         <div className="profile">
             <div className="profile-overlay"></div>
             <div className="image">
-                <Image width ={75} height={75} src="/Images/bender.png" alt="profile"/>
+                {/* <div className="user-btn">
+                    <UserButton />
+                </div> */}
+                <Image width ={70} height={70} src={imageUrl} alt="profile"/>
             </div>
-             <h1>
-                <span>John</span>
-                <span>DS</span>
-             </h1>
+            
+            <h1 className="capitalize">
+                {firstName} {lastName}
+            </h1>
         </div>
+        {/* Nav Items */}
         <ul className="nav-items">
             {menu.map((item) => {
                 const link = item.link;
                 return (
                 <li 
-                    className={`nav-item ${pathname === link ? "active": ""}`} key={item.id} 
+                    key={item.id}
+                    className={`nav-item ${pathname === link ? "active": ""}`} 
                     onClick={() => {
                     handleClick(link);
                 }}>
@@ -51,6 +64,7 @@ function Sidebar() {
                 );
             })} 
         </ul>
+        {/* Sign Out */}
         <div className="sign-out relative m-6">
             <Button 
                 name={"signOut"}
@@ -79,8 +93,36 @@ const SidebarStyled = styled.nav`
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    color: ${(props) => props.theme.colorGrey3};
+    color: ${(props) => props.theme.colorGrey3
+    };
+/* User button */
+ .user-btn {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 10;
+        cursor: pointer;
 
+        .cl-rootBox {
+            width: 100%;
+            height: 100%;
+            pointer-events: all;
+
+            .cl-userButtonBox {
+                width: 100%;
+                height: 100%;
+
+                .cl-userButtonTrigger {
+                    width: 100%;
+                    height: 100%;
+                    opacity: 0;
+                }
+            }
+        }
+    }
+/* Profile */
     .profile{
         margin: 1.5rem;
         position: relative;
@@ -115,7 +157,7 @@ const SidebarStyled = styled.nav`
             line-height: 1.5rem;
         }
 
-        .image, 
+       
         h1{
             position: relative;
             z-index: 1;
@@ -135,6 +177,7 @@ const SidebarStyled = styled.nav`
             border-radius: 100%;
             transition: all 0.5s ease;
             }
+            
         }
         
         > h1 {

@@ -8,9 +8,12 @@ declare module "styled-components" {
     colorBg3: string;
     borderColor2: string;
     colorGrey0: string;
+    colorGrey1: string;
     colorGrey2: string;
     colorGrey3: string;
+    colorGrey4: string;
     colorGrey5: string;
+    colorGreyDark: string;
     activeNavLinkHover: string;
     colorGreenDark: string;
     colorIcons: string;
@@ -19,6 +22,7 @@ declare module "styled-components" {
     colorPrimaryGreen: string;
     shadow7: string;
     colorDanger: string;
+    borderRadiusMd2: string;
 
     // add any other theme values here
   }

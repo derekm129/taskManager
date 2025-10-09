@@ -1,8 +1,12 @@
 "use client"
 import { useGlobalState } from "@/app/context/globalProvider";
-import React, {useState, ChangeEvent} from "react";
+import React, {useState} from "react";
 import axios from "axios";
 import toast from "react-hot-toast";
+import styled from "styled-components";
+import Button from "../Button/Button";
+import { add, plus } from "@/app/utils/Icons";
+
 
 function CreateContent() {
     const [title, setTitle] = useState("");
@@ -10,7 +14,9 @@ function CreateContent() {
     const [date, setDate] = useState("");
     const [completed, setCompleted] = useState(false);
     const [important, setImportant] = useState(false);
+    const {theme} = useGlobalState();
 
+// HandleChange
     const handleChange = (name: string) => (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         switch(name) {
         case "title":
@@ -32,7 +38,7 @@ function CreateContent() {
             break;
         }
     };
-
+// Handle submit
     const handleSubmit =  async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
@@ -56,8 +62,8 @@ function CreateContent() {
             console.log(error);
         }
     };
-
-    return <form onSubmit={handleSubmit}>
+// CreateContentStyled
+    return <CreateContentStyled onSubmit={handleSubmit} theme={theme}>
         <h1>Create a Task</h1>
         {/* Title */}
         <div className="input-control">
@@ -117,10 +123,58 @@ function CreateContent() {
             />
         </div>
         {/* Submit */}
-        <div className="submit-btn">
-            <button type="submit">Submit</button>
+        <div className="submit-btn flex justify-end">
+            <Button 
+            type="submit"
+            name="Create Task"
+            icon={plus}
+            padding={"1.2rem 2.4rem"}
+            borderRad={"0.8rem"}
+            fw={"500"}
+            fs={"1.2rem"}
+            color={theme.colorGrey1}
+            background={theme.colorGreenDark}
+            />
         </div>
-    </form>;
+    </CreateContentStyled>;
 };
+
+const CreateContentStyled = styled.form`
+    >h1{
+        font-size: clamp(1.2rem, 5vw, 1.6rem);
+        font-weight: 600;
+    }
+
+    color: ${(props) => props.theme.colorGrey1};
+
+    .input-control {
+        position: relative;
+        margin: 1.6rem 0;
+        font-weight: 500;
+
+        label{
+            margin-bottom: 0.8;
+            display: inline-block;
+            font-size: clamp(0.9rem, 5vw, 1.2rem);
+        }
+
+        span{
+            ${(props) => props.theme.colorGrey3};
+        }
+
+        input,
+        textarea {
+            width: 100%;
+            border: none;
+            padding: 1rem;
+
+            resize: none;
+            background-color: ${(props) => props.theme.colorGreyDark};
+            color: ${(props) => props.theme.colorGrey2};
+        }
+    }
+
+
+`;
 
 export default CreateContent;

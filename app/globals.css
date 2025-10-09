@@ -22,6 +22,14 @@ body {
     height: 100vh;
 }
 
+input,
+textarea, 
+button{
+  border: none;
+  outline: none;
+  background: transparent;
+}
+
 /* HTML: <div class="loader"></div> */
 .loader {
   width: 50px;

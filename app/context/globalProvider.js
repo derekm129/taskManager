@@ -28,24 +28,20 @@ export const GlobalProvider = ({ children }) => {
     const collapseMenu = () => {
         setCollapsed(!collapsed);
     };
-
+    // GET
     const allTasks = async () => {
         setIsLoading(true);
         try {
             const res = await axios.get("/api/tasks");
 
-            const sorted = res.data.sort((a, b) => {
-                return (
-                    new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
-                );
-            });
-            setTasks(sorted);
+            setTasks(res.data);
+
             setIsLoading(false);
         } catch (error) {
             console.log(error);
         }
     };
-
+    // DELETE
     const deleteTask = async (id) => {
         try {
             const res = await axios.delete(`/api/tasks/${id}`);
@@ -58,6 +54,7 @@ export const GlobalProvider = ({ children }) => {
         }
     };
 
+    // UPDATE
     const updateTask = async (task) => {
         try {
             const res = await axios.put(`/api/tasks`, task);
@@ -75,11 +72,13 @@ export const GlobalProvider = ({ children }) => {
     const importantTasks = tasks.filter((task) => task.isImportant === true);
     const incompleteTasks = tasks.filter((task) => task.isCompleted === false);
 
+    console.log(tasks);
+
     // Loader
     // const [isReady, setIsReady] = React.useState(false);
-    // React.useEffect(() => {
-    //     if (user) allTasks();
-    // }, [user]);
+    React.useEffect(() => {
+        if (user) allTasks();
+    }, [user]);
 
     // if (!isReady) {
     //     return <div className="w-full h-full flex items-center justify-center">
@@ -87,6 +86,7 @@ export const GlobalProvider = ({ children }) => {
     //     </div>
     // }
 
+    // GLOBAL
     return (
         <GlobalContext.Provider
             value={{
