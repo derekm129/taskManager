@@ -21,7 +21,13 @@ body {
 
     height: 100vh;
 }
-
+/* Media query */
+@media screen and (max-width: 768px) {
+  body {
+    font-size: 80%;
+  }       
+    }
+/* Inputs */
 input,
 textarea, 
 button{
@@ -29,6 +35,16 @@ button{
   outline: none;
   background: transparent;
 }
+
+input[type="date"]::-webkit-calendar-picker-indicator {
+  filter: invert(1);
+  font-size: 1.5rem;
+  cursor: pointer;
+}
+
+/* input[type="checkbox"] {
+
+} */
 
 /* HTML: <div class="loader"></div> */
 .loader {

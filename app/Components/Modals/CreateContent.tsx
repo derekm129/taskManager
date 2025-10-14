@@ -14,7 +14,7 @@ function CreateContent() {
     const [date, setDate] = useState("");
     const [completed, setCompleted] = useState(false);
     const [important, setImportant] = useState(false);
-    const {theme} = useGlobalState();
+    const {theme, allTasks, closeModal} = useGlobalState();
 
 // HandleChange
     const handleChange = (name: string) => (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -56,8 +56,13 @@ function CreateContent() {
                 toast.error(res.data.error);
             }
 
+        if (!res.data.error) {
+            allTasks();
+            closeModal();
             toast.success("Task created succussfully.");
-        } catch(error) {
+        }
+        
+        }  catch(error) {
             toast.error("Something went wrong.")
             console.log(error);
         }
@@ -101,7 +106,7 @@ function CreateContent() {
             />
         </div>
         {/* Completed */}
-        <div className="input-control">
+        <div className="input-control toggler">
             <label htmlFor="completed">Toggle Completed</label>
             <input 
                 value={completed.toString()}
@@ -174,6 +179,21 @@ const CreateContentStyled = styled.form`
         }
     }
 
+    .toggler {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+
+        cursor: pointer;
+
+        label {
+          flex: 1;  
+        }
+
+        input {
+            width: initial;
+        }
+    }
 
 `;
 

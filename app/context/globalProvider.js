@@ -17,6 +17,7 @@ export const GlobalProvider = ({ children }) => {
     const [tasks, setTasks] = useState([]);
     const theme = themes[selectedTheme];
 
+// Modal
     const openModal = () => {
         setModal(true);
     };
@@ -25,16 +26,22 @@ export const GlobalProvider = ({ children }) => {
         setModal(false);
     };
 
+// Collapse menu
     const collapseMenu = () => {
         setCollapsed(!collapsed);
     };
-    // GET
+
+// GET all tasks
     const allTasks = async () => {
         setIsLoading(true);
         try {
             const res = await axios.get("/api/tasks");
 
-            setTasks(res.data);
+            const sorted = res.data.sort((a, b) => {
+                return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
+            });
+
+            setTasks(sorted);
 
             setIsLoading(false);
         } catch (error) {

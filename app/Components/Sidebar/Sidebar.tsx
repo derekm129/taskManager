@@ -9,10 +9,11 @@ import { usePathname, useRouter } from "next/navigation";
 import themes from "@/app/context/themes";
 import { useClerk, UserButton, useUser } from "@clerk/nextjs";
 import Button from "../Button/Button";
+import { arrowLeft, bars, logout } from "@/app/utils/Icons";
 
 
 function Sidebar() {
-    const { theme } = useGlobalState();
+    const { theme, collapsed, collapseMenu } = useGlobalState();
     const { signOut } = useClerk();
 
     const { user } = useUser();
@@ -32,15 +33,18 @@ function Sidebar() {
         router.push(link);
     }
 
-    return <SidebarStyled theme={theme}>
+    return <SidebarStyled theme={theme} $collapsed={collapsed}>
         {/* Profile info */}
+        <button className="toggle-nav" onClick={collapseMenu}>
+            {collapsed ? bars : arrowLeft}
+        </button>
         <div className="profile">
             <div className="profile-overlay"></div>
             <div className="image">
-                {/* <div className="user-btn">
-                    <UserButton />
-                </div> */}
+               {imageUrl && (
                 <Image width ={70} height={70} src={imageUrl} alt="profile"/>
+               )}
+                
             </div>
             
             <h1 className="capitalize">
@@ -82,10 +86,11 @@ function Sidebar() {
         
     </SidebarStyled>;
 }
-
-const SidebarStyled = styled.nav`
+// SidebarStyled
+const SidebarStyled = styled.nav<{ $collapsed: boolean }>`
     position: relative;
-    width: ${(props) => props.theme.sidebarWidth};
+    width: ${({ $collapsed }) => ($collapsed ? "5rem" : "15rem")};
+    transition: width 0.3s ease;
     background-color: ${(props) => props.theme.colorBg2};
     border: 2px solid ${(props) => props.theme.borderColor2};
     border-radius: 1rem;
@@ -93,10 +98,41 @@ const SidebarStyled = styled.nav`
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    color: ${(props) => props.theme.colorGrey3
-    };
+
+    color: ${(props) => props.theme.colorGrey3};
+
+    /* Media query */
+    @media screen and (max-width: 768px) {
+        position: fixed;
+        height: calc(100vh -2rem);
+        z-index: 100;
+        transition: all 0.3s cubic-bezier(0.53, 0.21, 0, 1);
+        transform: ${(props) => props.collapsed ? "translateX(-107%)" : "translateX(0)"};
+    
+        .toggle-nav {
+            display: block !important;
+        }    
+    }
+    /* toggle nav */
+    .toggle-nav{
+        display: none;
+        position: absolute;
+        right: -78px;
+        top: 5rem;
+        padding: .8rem 0.9rem;
+        border-top-right-radius: 1rem;
+        border-bottom-right-radius: 1rem;
+        
+        background-color: ${(props) => props.theme.colorBg2};
+        border-right: 2px solid ${(props) => props.theme.borderColor2};
+        border-top: 2px solid ${(props) => props.theme.borderColor2};
+        border-bottom: 2px solid ${(props) => props.theme.borderColor2};
+    }
+
+ 
+
 /* User button */
- .user-btn {
+    .user-btn {
         position: absolute;
         top: 0;
         left: 0;
