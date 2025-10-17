@@ -71,7 +71,7 @@ const TaskItemStyled = styled.div`
   border-radius: 1rem;
   background-color: ${(props) => props.theme.borderColor2};
   box-shadow: ${(props) => props.theme.shadow7};
-  border: 2px solid ${(props) => props.theme.borderColor2};
+  border: 2px solid #1E5128;
 
   height: 16rem;
   display: flex;

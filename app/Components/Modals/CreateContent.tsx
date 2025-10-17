@@ -5,7 +5,7 @@ import axios from "axios";
 import toast from "react-hot-toast";
 import styled from "styled-components";
 import Button from "../Button/Button";
-import { add, plus } from "@/app/utils/Icons";
+import { blackPlus } from "@/app/utils/Icons";
 
 
 function CreateContent() {
@@ -69,7 +69,7 @@ function CreateContent() {
     };
 // CreateContentStyled
     return <CreateContentStyled onSubmit={handleSubmit} theme={theme}>
-        <h1>Create a Task</h1>
+        <h1>CREATE A TASK</h1>
         {/* Title */}
         <div className="input-control">
             <label htmlFor="title">Title</label>
@@ -132,12 +132,12 @@ function CreateContent() {
             <Button 
             type="submit"
             name="Create Task"
-            icon={plus}
+            icon={blackPlus}
             padding={"1.2rem 2.4rem"}
             borderRad={"0.8rem"}
             fw={"500"}
             fs={"1.2rem"}
-            color={theme.colorGrey1}
+            color={"black"}
             background={theme.colorGreenDark}
             />
         </div>

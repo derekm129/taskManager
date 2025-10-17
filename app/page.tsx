@@ -6,5 +6,5 @@ export default function Home() {
 
   const {tasks} = useGlobalState();
 
-  return <Tasks title="All Tasks" tasks={tasks}/>
+  return <Tasks title="ALL TASKS" tasks={tasks}/>
 }

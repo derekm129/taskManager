@@ -57,12 +57,12 @@ function Tasks({title, tasks = []}: Props) {
     );
 }
 
-
+// Task box
 const TaskStyled = styled.main`
     padding: 2rem;
     width: 100%;
-    background-color: ${(props) => props.theme.colorBg2};
-    border: 2px solid ${(props) => props.theme.borderColor2};
+    background-color: #121212;
+    border: 2px solid #1E5128;
     border-radius: 1rem;
     height: 100%;
 
@@ -84,7 +84,7 @@ const TaskStyled = styled.main`
       left: 0;
       width: 3rem;
       height: 0.2rem;
-      background-color: ${(props) => props.theme.colorPrimaryGreen};
+      /* background-color: ${(props) => props.theme.colorPrimaryGreen}; */
       border-radius: 0.5rem;
     }
 }

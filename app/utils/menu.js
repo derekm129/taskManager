@@ -1,30 +1,30 @@
-import { list, check, todo, home } from "./Icons";
+import { mailIcon, check, triangle, home } from "./Icons";
 
 const menu = [
     {
         id: 1,
-        title: "All Tasks",
+        title: "ALL TASKS",
         icon: home,
         link: "/",
     },
     {
         id: 2,
-        title: "Important!",
-        icon: list,
+        title: "IMPORTANT",
+        icon: triangle,
         link: "/important",
     },
     {
+        id: 4,
+        title: "INCOMPLETE",
+        icon: mailIcon,
+        link: "/incomplete",
+    },
+    {
         id: 3,
-        title: "Completed!",
+        title: "COMPLETED!",
         icon: check,
         link: "/completed",
     },
-    {
-        id: 4,
-        title: "Do It Now",
-        icon: todo,
-        link: "/incomplete",
-    }
 ]
 
 export default menu;
