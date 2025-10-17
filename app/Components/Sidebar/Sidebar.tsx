@@ -6,37 +6,59 @@ import Image from "next/image";
 import menu from "@/app/utils/menu";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import themes from "@/app/context/themes";
+import { useClerk, useUser } from "@clerk/nextjs";
+import Button from "../Button/Button";
+import { arrowLeft, bars } from "@/app/utils/Icons";
 
 
 function Sidebar() {
-    const { theme } = useGlobalState();
-    console.log("Sidebar theme:", theme);
+    const { theme, collapsed, collapseMenu } = useGlobalState();
+    const { signOut } = useClerk();
+
+    const { user } = useUser();
+
+    const { firstName, lastName, imageUrl } = user || 
+    { firstName: "", 
+        lastName: "",
+        imageUrl: ""
+    };
 
     const router = useRouter();
     const pathname = usePathname();
+
+
 
     const handleClick = (link: string) => {
         router.push(link);
     }
 
-    return <SidebarStyled>
+    return <SidebarStyled theme={theme} $collapsed={collapsed}>
+        {/* Profile info */}
+        <button className="toggle-nav" onClick={collapseMenu}>
+            {collapsed ? bars : arrowLeft}
+        </button>
         <div className="profile">
             <div className="profile-overlay"></div>
             <div className="image">
-                <Image width ={75} height={75} src="/Images/bender.png" alt="profile"/>
+               {imageUrl && (
+                <Image width ={70} height={70} src={imageUrl} alt="profile"/>
+               )}
+                
             </div>
-             <h1>
-                <span>John</span>
-                <span>DS</span>
-             </h1>
+            
+            <h1 className="capitalize">
+                {firstName} {lastName}
+            </h1>
         </div>
+        {/* Nav Items */}
         <ul className="nav-items">
             {menu.map((item) => {
-
                 const link = item.link;
                 return (
-                <li className={`nav-item ${pathname === link ? "active": ""}`} key={item.id} onClick={() => {
+                <li 
+                    key={item.id}
+                    className={`nav-item ${pathname === link ? "active": ""}`} 
+                    onClick={() => {
                     handleClick(link);
                 }}>
                     {item.icon}
@@ -45,22 +67,97 @@ function Sidebar() {
                 );
             })} 
         </ul>
-        <button></button>
+        {/* Sign Out */}
+        <div className="sign-out relative m-6">
+            <Button 
+                name={"Sign Out"}
+                type={"submit"}
+                padding={"0.4rem 0.8rem"}
+                borderRad={"0.6rem"}
+                fw={"500"}
+                fs={"1.2rem"}
+                // icon={logout}
+                click={() =>{
+                    signOut(() => router.push("/sign-in"));
+                }}
+            />
+        </div>
+        
     </SidebarStyled>;
 }
-
-const SidebarStyled = styled.nav`
+// SidebarStyled
+const SidebarStyled = styled.nav<{ $collapsed: boolean }>`
     position: relative;
-    width: ${(props) => props.theme.sidebarWidth};
-    background-color: ${(props) => props.theme.colorBg2};
-    border: 2px solid ${(props) => props.theme.borderColor2};
+    width: ${({ $collapsed }) => ($collapsed ? "5rem" : "15rem")};
+    transition: width 0.3s ease;
+    background-color:#121212;
+    border: 2px solid #1E5128;
     border-radius: 1rem;
 
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+
     color: ${(props) => props.theme.colorGrey3};
 
+    /* Media query */
+    @media screen and (max-width: 768px) {
+        position: fixed;
+        height: calc(100vh -2rem);
+        z-index: 100;
+        transition: all 0.3s cubic-bezier(0.53, 0.21, 0, 1);
+        transform: ${(props) => props.$collapsed ? "translateX(-107%)" : "translateX(0)"};
+    
+        .toggle-nav {
+            display: block !important;
+        }    
+    }
+    /* toggle nav */
+    .toggle-nav{
+        display: none;
+        position: absolute;
+        right: -78px;
+        top: 5rem;
+        padding: .8rem 0.9rem;
+        border-top-right-radius: 1rem;
+        border-bottom-right-radius: 1rem;
+        
+        background-color: ${(props) => props.theme.colorBg2};
+        border-right: 2px solid ${(props) => props.theme.borderColor2};
+        border-top: 2px solid ${(props) => props.theme.borderColor2};
+        border-bottom: 2px solid ${(props) => props.theme.borderColor2};
+    }
+
+ 
+
+/* User button */
+    .user-btn {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 10;
+        cursor: pointer;
+
+        .cl-rootBox {
+            width: 100%;
+            height: 100%;
+            pointer-events: all;
+
+            .cl-userButtonBox {
+                width: 100%;
+                height: 100%;
+
+                .cl-userButtonTrigger {
+                    width: 100%;
+                    height: 100%;
+                    opacity: 0;
+                }
+            }
+        }
+    }
+/* Profile */
     .profile{
         margin: 1.5rem;
         position: relative;
@@ -68,7 +165,7 @@ const SidebarStyled = styled.nav`
         border-radius: 1rem;
         cursor: pointer;
         font-weight: 500;
-        color: ${(props) => props.theme.colorGrey0};
+        color: white;
 
         display: flex;
         align-items: center;
@@ -84,7 +181,7 @@ const SidebarStyled = styled.nav`
             background: ${(props) => props.theme.colorBg3};
             transition: all 0.55s linear;
             border-radius: 1rem;
-            border: 2px solid  ${(props) => props.theme.borderColor2};
+            border: 2px solid #1E5128;
             opacity: 0.2;
         }
         
@@ -95,7 +192,7 @@ const SidebarStyled = styled.nav`
             line-height: 1.5rem;
         }
 
-        .image, 
+       
         h1{
             position: relative;
             z-index: 1;
@@ -115,6 +212,7 @@ const SidebarStyled = styled.nav`
             border-radius: 100%;
             transition: all 0.5s ease;
             }
+            
         }
         
         > h1 {
@@ -123,12 +221,12 @@ const SidebarStyled = styled.nav`
             line-height: 100%;
         }
 
-        &:hover {
+        /* &:hover {
             .profile-overlay{
                 opacity: 1;
-                border: 2px solid ${(props) => props.theme.borderColor2};
+                border: 2px solid #1E5128;
             }
-        }
+        } */
     }
 
     .nav-item {
@@ -173,12 +271,6 @@ const SidebarStyled = styled.nav`
             display: flex;
             align-items: center;
             color: ${(props) => props.theme.colorIcons};
-        }
-
-        &:hover {
-            &:: after {
-            width: 100%;
-            }
         }
     }
 

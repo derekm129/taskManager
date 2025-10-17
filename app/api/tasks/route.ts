@@ -4,12 +4,11 @@ import { NextResponse } from "next/server";
 // POST
 export async function POST(req: Request) {
   try {
-    
-    const authData = await auth();
-    if (!authData?.userId) {
+    const { userId } = await auth();
+
+    if (!userId) {
       return NextResponse.json({ error: "Unauthorized", status: 401 });
     }
-    const userId: string = authData.userId!; 
 
     const { title, description, date, completed, important } = await req.json();
 
@@ -47,13 +46,12 @@ export async function POST(req: Request) {
 // GET
 export async function GET(req: Request) {
   try {
-    const authData =  await auth();
+    const { userId } = await auth();
 
-    if (!authData?.userId) {
+    if (!userId) {
       return NextResponse.json({ error: "Unauthorized", status: 401 });
     }
 
-    const userId: string = authData.userId!; 
     const tasks = await prisma.task.findMany({
       where: {
         userId,
@@ -69,28 +67,26 @@ export async function GET(req: Request) {
 // PUT
 export async function PUT(req: Request) {
   try {
-    const authData =  await auth();
+    const { userId } = await auth();
+    const { isCompleted, id } = await req.json();
 
-    if (!authData?.userId) {
+    if (!userId) {
       return NextResponse.json({ error: "Unauthorized", status: 401 });
     }
 
-    const userId: string = authData.userId!; // TypeScript-safe
-
-    const { isCompleted, id } = await req.json();
-
-    if (!id) {
-      return NextResponse.json({ error: "Task ID is required", status: 400 });
-    }
-
     const task = await prisma.task.update({
-      where: { id },
-      data: { isCompleted },
+      where: {
+        id,
+      },
+      data: {
+        isCompleted,
+      },
     });
 
     return NextResponse.json(task);
   } catch (error) {
-    console.log("ERROR UPDATING TASK:", error);
-    return NextResponse.json({ error: "Error updating task", status: 500 });
+    console.log("ERROR UPDATING TASK: ", error);
+    return NextResponse.json({ error: "Error deleting task", status: 500 });
   }
 }
+

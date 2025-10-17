@@ -24,3 +24,6 @@ export const admin = <i className="fa-solid fa-lock"></i>;
 export const linked = <i className="fa-brands fa-linkedin"></i>;
 export const mailIcon = <i className="fa-solid fa-envelope"></i>;
 export const plus = <i className="fa-solid fa-plus fa-beat-fade"></i>;
+export const blackPlus = <i className="fa-solid fa-plus fa-beat-fade" style={{ color: "black" }}></i>;
+export const exclamation = <i className="fa-solid fa-exclamation"></i>;
+export const triangle = <i className="fa-solid fa-triangle-exclamation" ></i>
