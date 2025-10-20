@@ -14,7 +14,24 @@ function CreateContent() {
     const [date, setDate] = useState("");
     const [completed, setCompleted] = useState(false);
     const [important, setImportant] = useState(false);
-    const {theme, allTasks, closeModal} = useGlobalState();
+    const {theme, allTasks, closeModal, updateTask, taskToEdit, setTaskToEdit} = useGlobalState();
+
+// UseEffect
+React.useEffect(() => {
+  if (taskToEdit) {
+    setTitle(taskToEdit.title || "");
+    setDescription(taskToEdit.description || "");
+    setDate(taskToEdit.date ? taskToEdit.date.split("T")[0] : ""); // for HTML date input
+    setCompleted(taskToEdit.completed || false);
+    setImportant(taskToEdit.important || false);
+  } else {
+    setTitle("");
+    setDescription("");
+    setDate("");
+    setCompleted(false);
+    setImportant(false);
+  }
+}, [taskToEdit]);
 
 // HandleChange
     const handleChange = (name: string) => (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -43,25 +60,30 @@ function CreateContent() {
         e.preventDefault();
 
         const task = {
+            id: taskToEdit?.id,
             title, 
             description, 
             date, 
-            completed, 
-            important
+            isCompleted: completed, 
+            isImportant: important
         };
 
         try {
-            const res = await axios.post("/api/tasks", task);
-            if(res.data.error) {
+            if(taskToEdit) {
+                await updateTask(task);
+                toast.success("Task updated successfully.");
+                setTaskToEdit(null);
+            } else {
+                const res = await axios.post("/api/tasks", task);
+                if(res.data.error) {
                 toast.error(res.data.error);
+                return;
             }
-
-        if (!res.data.error) {
-            allTasks();
-            closeModal();
             toast.success("Task created succussfully.");
         }
-        
+
+        allTasks();
+        closeModal();
         }  catch(error) {
             toast.error("Something went wrong.")
             console.log(error);

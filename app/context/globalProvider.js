@@ -10,14 +10,15 @@ export const GlobalUpdateContext = createContext();
 
 export const GlobalProvider = ({ children }) => {
     const { user } = useUser();
-    const [selectedTheme, setSelectedTheme] = useState(0);
+    const [selectedTheme] = useState(0);
     const [isLoading, setIsLoading] = useState(false);
     const [modal, setModal] = useState(false);
     const [collapsed, setCollapsed] = useState(false);
     const [tasks, setTasks] = useState([]);
+    const [taskToEdit, setTaskToEdit] = useState(null);
     const theme = themes[selectedTheme];
 
-// Modal
+    // Modal
     const openModal = () => {
         setModal(true);
     };
@@ -26,12 +27,12 @@ export const GlobalProvider = ({ children }) => {
         setModal(false);
     };
 
-// Collapse menu
+    // Collapse menu
     const collapseMenu = () => {
         setCollapsed(!collapsed);
     };
 
-// GET all tasks
+    // GET all tasks
     const allTasks = async () => {
         setIsLoading(true);
         try {
@@ -64,7 +65,12 @@ export const GlobalProvider = ({ children }) => {
     // UPDATE
     const updateTask = async (task) => {
         try {
-            const res = await axios.put(`/api/tasks`, task);
+            if (!task.id) {
+                toast.error("No task id provided");
+                return;
+            };
+
+            const res = await axios.put(`/api/tasks/${task.id}`, task);
 
             toast.success("Task updated");
 
@@ -81,19 +87,10 @@ export const GlobalProvider = ({ children }) => {
 
     console.log(tasks);
 
-    // Loader
-    // const [isReady, setIsReady] = React.useState(false);
     React.useEffect(() => {
         if (user) allTasks();
     }, [user]);
 
-    // if (!isReady) {
-    //     return <div className="w-full h-full flex items-center justify-center">
-    //         <span className="loader"></span>
-    //     </div>
-    // }
-
-    // GLOBAL
     return (
         <GlobalContext.Provider
             value={{
@@ -111,6 +108,8 @@ export const GlobalProvider = ({ children }) => {
                 allTasks,
                 collapsed,
                 collapseMenu,
+                taskToEdit,
+                setTaskToEdit
             }}
         >
             <GlobalUpdateContext.Provider value={{}}>

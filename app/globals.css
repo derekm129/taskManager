@@ -14,7 +14,7 @@
     }
 }
 
-h1 {
+h1, title, p {
   font-family: 'BBH Sans Bartle', sans-serif;
 }
 
