@@ -15,6 +15,7 @@ interface Props {
     type?: "submit" | "button" | "reset" | undefined;
     border?: string;
     color?: string;
+    
 }
 
 function Button({
