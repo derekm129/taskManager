@@ -13,6 +13,7 @@ interface Task {
     description: string;
     date: string;
     isCompleted: boolean;
+    isImportant?: boolean;
     id: string;
 }
 
@@ -40,6 +41,7 @@ function Tasks({title, tasks = []}: Props) {
                 date={task.date}
                 isCompleted={task.isCompleted}
                 id={task.id}
+                isImportant={task.isImportant ?? false}
                 />
             ))}
             {/* Create task */}
