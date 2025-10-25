@@ -13,7 +13,7 @@ This webpage can be used to create an organized to-do list.
 
 ![Task Manager](./public/Images/screenshot.png)
 
-https://main--shimmering-parfait-ac6ce5.netlify.app/
+https://derekstaskmanager.netlify.app/
 
 ## Credits
 
