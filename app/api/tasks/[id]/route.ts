@@ -4,20 +4,18 @@ import { NextResponse } from "next/server";
 // DELETE HANDLER
 export async function DELETE(
   req: Request,
-  { params }: { params: { id: string } }
+  context: { params: Promise<{ id: string}>}
 ) {
   try {
     const { userId } = await auth();
-    const { id } = params;
+    const { id } = await context.params;
 
     if (!userId) {
       return new NextResponse("Unauthorized", { status: 401 });
     }
 
     const task = await prisma.task.delete({
-      where: {
-        id,
-      },
+      where: { id },
     });
 
     return NextResponse.json(task);
