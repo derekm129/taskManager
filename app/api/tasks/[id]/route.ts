@@ -29,12 +29,13 @@ export async function DELETE(
 
 // PUT HANDLER
 export async function PUT(
-  req: Request,
-  { params }: { params: { id: string } }
-) {
+  req: Request, 
+  context: {params: Promise<{ id: string }>}
+) 
+{
   try {
     const { userId } = await auth();
-    const { id } = params;
+    const { id } = await context.params;
     const { title, description, date, completed, important } = await req.json();
 
     if (!userId) {
