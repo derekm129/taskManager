@@ -13,7 +13,7 @@ interface Task {
     description: string;
     date: string;
     isCompleted: boolean;
-    isImportant: boolean;
+    isImportant?: boolean;
     id: string;
 }
 
