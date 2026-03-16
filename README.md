@@ -1,7 +1,7 @@
 # My Task Manager
 
 ## Description
-I created this application using React, MongoDB, and Prisma. My goal for this project was to create an interactive web application that utilizes C.R.U.D (Create, Read, Update, Delete) operations. With this project, I used a responsive React front end with a backend connected to a MongoDB database via Prisma ORM. This setup ensures efficient data handling, clean API design, and smooth user interactions.
+I created this application using React, Typescript, MongoDB, and Prisma. My goal for this project was to create an interactive web application that utilizes C.R.U.D (Create, Read, Update, Delete) operations. With this project, I used a responsive React front end with a backend connected to a MongoDB database via Prisma ORM. This setup ensures efficient data handling, clean API design, and smooth user interactions.
 
 ## Installation
 
